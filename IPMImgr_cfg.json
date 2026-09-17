@@ -1,0 +1,57 @@
+{
+    "IPMI": {
+        "Interface": "lanplus",
+        "CipherSuite": "3",
+        "PowerStatusTimeout": 1500
+    },
+
+    "Servers": [
+        {
+            "Name": "Dell",
+            "IP": "10.15.20.25",
+            "Username": "root",
+            "Password": "calvin"
+        },
+        {
+            "Name": "HPE",
+            "IP": "10.20.30.40",
+            "Username": "Administrator",
+            "Password": "SGHpassowrd"
+        },
+        {
+            "Name": "NEC",
+            "IP": "10.11.12.13",
+            "Username": "admin",
+            "Password": "Administrator"
+        },
+        {
+            "Name": "IBM",
+            "IP": "10.50.60.70",
+            "Username": "USERID",
+            "Password": "PASSW0RD"
+        },
+        {
+            "Name": "ASUS",
+            "IP": "10.30.35.40",
+            "Username": "admin",
+            "Password": "admin"
+        },
+        {
+            "Name": "Acer",
+            "IP": "10.80.90.10",
+            "Username": "root",
+            "Password": "superuser"
+        },        {
+            "Name": "Fujitsu",
+            "IP": "10.25.35.45",
+            "Username": "admin",
+            "Password": "admin"
+        },
+        {
+            "Name": "Lenovo",
+            "IP": "10.14.15.16",
+            "Username": "USERID",
+            "Password": "PASSW0RD"
+        }
+    ]
+}
