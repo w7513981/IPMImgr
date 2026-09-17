@@ -4,7 +4,7 @@ IPMI伺服器管理腳本，可自定義伺服器清單。
 <br />
 
 ## 這是什麼？
-**IPMI Server Manager**（簡稱：IPMImgr
+**IPMI Server Manager**（簡稱：IPMImgr）
 是一個簡單操作、可自定義伺服器清單的IPMI管理腳本。
 
 <br />
