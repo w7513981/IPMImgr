@@ -1,7 +1,7 @@
 ﻿# Requires PowerShell Version 5.1
 
 # ============================================================
-# IPMI Server Manager v1.3
+# IPMI Server Manager v1.4
 #
 # 版本 v1	(2026-09-16)
 #	發布 基本雛形
@@ -11,6 +11,11 @@
 #	刪除 IPMIUtil支援
 #	增加 IPMITool支援
 #	分離 設定清單
+#
+# 版本v1.4	(2026-09-17)
+#	新增 軟關機
+#	新增 關閉電源警示
+#
 # ============================================================
 
 $ScriptPath = Split-Path -Parent $MyInvocation.MyCommand.Definition
@@ -80,7 +85,7 @@ function Show-Header {
 	Clear-Host
 	Write-Host ""
 	Write-Host "==================================================" -ForegroundColor Cyan
-	Write-Host "            IPMI Server Manager v1.3  "             -ForegroundColor Cyan
+	Write-Host "            IPMI Server Manager v1.4  "             -ForegroundColor Cyan
 	Write-Host "==================================================" -ForegroundColor Cyan
 	Write-Host ""
 }
@@ -497,8 +502,9 @@ function Show-FunctionMenu {
 		Write-Host ""
 		Write-Host " [1] 開機"
 		Write-Host " [2] 重啟"
-		Write-Host " [3] 關閉電源"
-		Write-Host " [4] 設備狀態"
+		Write-Host " [3] 關機"
+		Write-Host " [4] 關閉電源"
+		Write-Host " [5] 設備狀態"
 		Write-Host ""
 		Write-Host " [0] 返回伺服器選擇"
 		Write-Host ""
@@ -540,26 +546,64 @@ function Show-FunctionMenu {
 			}
 
 			# ------------------------------------------------
-			# Power OFF
-			# ipmitool chassis power off
+			# Shutdown
+			# ipmitool chassis power soft
 			# ------------------------------------------------
 
 			"3" {
 				Confirm-PowerAction `
 					-Server $Server `
-					-Action "關閉電源 (Power OFF)" `
+					-Action "關機 (Shutdown)" `
 					-Command @(
 						"chassis",
 						"power",
-						"off"
+						"soft"
 					)
+			}
+
+			# ------------------------------------------------
+			# Power OFF
+			# ipmitool chassis power off
+			# ------------------------------------------------
+
+			"4" {
+				Show-Header
+
+				Write-Host "Server : $($Server.Name)" -ForegroundColor Yellow
+				Write-Host "IP     : $($Server.IP)" -ForegroundColor Yellow
+				Write-Host ""
+				Write-Host "!!! 警告 !!!" -ForegroundColor Red
+				Write-Host ""
+				Write-Host "這個操作會立即關閉伺服器的電源！" -ForegroundColor Red
+				Write-Host "伺服器將會直接斷電！" -ForegroundColor Red
+				Write-Host ""
+				Write-Host "這個操作不是正常的系統關機，" -ForegroundColor Red
+				Write-Host "請確認目前的工作階段已經儲存。" -ForegroundColor Red
+				Write-Host ""
+				$Confirm = Read-Host "若確定要關閉電源，請輸入 YES"
+
+				if ($Confirm -eq "YES") {
+					Invoke-IPMI `
+						-Server $Server `
+						-CommandArguments @(
+							"chassis",
+							"power",
+							"off"
+						)
+				}
+				else {
+					Write-Host ""
+					Write-Host "操作已取消。" -ForegroundColor Yellow
+
+					Start-Sleep -Seconds 1
+				}
 			}
 
 			# ------------------------------------------------
 			# Enter Status Menu
 			# ------------------------------------------------
 
-			"4" {
+			"5" {
 				Show-StatusMenu `
 					-Server $Server
 			}
